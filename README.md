@@ -74,19 +74,20 @@ OpenCode walks up from the current directory to the git worktree root, loading s
 
 By default, the agent loads skills automatically via the built-in `skill` tool when your prompt matches the skill's description. If you want to invoke it explicitly with a slash command like `/git-workflow`, create a **custom command file**:
 
-**Global (`~/.config/opencode/commands/git-workflow.md`):**
+Create `~/.config/opencode/commands/git-workflow.md`:
 
-```markdown
+```bash
+mkdir -p ~/.config/opencode/commands
+cat > ~/.config/opencode/commands/git-workflow.md << 'EOF'
 ---
 description: Git workflow assistant — commits, branches, rebase/merge, PRs
 ---
 
 Use the git-workflow skill to handle this task.
+EOF
 ```
 
-**Per-project (`.opencode/commands/git-workflow.md`):** same content, just in your project's directory.
-
-After restarting OpenCode, just type `/git-workflow` and the agent will load the skill.
+Restart OpenCode, then type `/git-workflow` — the agent will load the skill.
 
 ## Skill File Format
 
