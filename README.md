@@ -70,6 +70,24 @@ Skills are stored in `.opencode/skills/<skill-name>/SKILL.md`. OpenCode discover
 
 OpenCode walks up from the current directory to the git worktree root, loading skills from any of these paths along the way.
 
+## Using a Skill with `/git-workflow` (Slash Command)
+
+By default, the agent loads skills automatically via the built-in `skill` tool when your prompt matches the skill's description. If you want to invoke it explicitly with a slash command like `/git-workflow`, create a **custom command file**:
+
+**Global (`~/.config/opencode/commands/git-workflow.md`):**
+
+```markdown
+---
+description: Git workflow assistant — commits, branches, rebase/merge, PRs
+---
+
+Use the git-workflow skill to handle this task.
+```
+
+**Per-project (`.opencode/commands/git-workflow.md`):** same content, just in your project's directory.
+
+After restarting OpenCode, just type `/git-workflow` and the agent will load the skill.
+
 ## Skill File Format
 
 Each `SKILL.md` requires YAML frontmatter:
@@ -126,18 +144,6 @@ Values: `allow` (loads immediately), `deny` (hidden from agent), `ask` (prompts 
 4. Check permissions — `deny` hides the skill
 5. Skill names must be unique across all locations
 6. Restart OpenCode after adding a new skill
-
-**Skill not triggering:**
-- The agent loads skills on-demand via the `skill` tool, not automatically
-- If you want a slash command (`/git-workflow`), create a custom command at `~/.config/opencode/commands/git-workflow.md`:
-
-```markdown
----
-description: Git workflow assistant
----
-
-Use the git-workflow skill to handle this task.
-```
 
 ## Creating a New Skill
 
