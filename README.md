@@ -18,19 +18,27 @@ git clone https://github.com/aadish0day/opencode-skills.git
 cd opencode-skills
 ```
 
-### Install globally (recommended)
-
-Makes skills available in every project:
+### Install globally with setup script (recommended)
 
 ```bash
-cp -r .opencode/skills ~/.config/opencode/
+./setup.sh
 ```
 
-Restart OpenCode. Skills will appear in the agent's available tools.
+Or manually with GNU Stow:
 
-### Install per-project
+```bash
+stow -t ~ .
+```
 
-Makes skills available only in a specific project:
+For a custom target directory:
+
+```bash
+./setup.sh /path/to/home
+```
+
+This symlinks `.config/opencode/` into your home directory. Skills and commands stay in the repo — any `git pull` updates them automatically.
+
+### Install per-project (manual copy)
 
 ```bash
 cp -r .opencode/skills /path/to/your/project/.opencode/
@@ -72,9 +80,11 @@ OpenCode walks up from the current directory to the git worktree root, loading s
 
 ## Using a Skill with `/git-workflow` (Slash Command)
 
-By default, the agent loads skills automatically via the built-in `skill` tool when your prompt matches the skill's description. If you want to invoke it explicitly with a slash command like `/git-workflow`, create a **custom command file**:
+By default, the agent loads skills automatically via the built-in `skill` tool when your prompt matches the skill's description. If you want to invoke it explicitly with a slash command like `/git-workflow`:
 
-Create `~/.config/opencode/commands/git-workflow.md`:
+If you used `./setup.sh` or `stow -t ~ .`, the command is already linked. Just restart OpenCode and type `/git-workflow`.
+
+To create it manually:
 
 ```bash
 mkdir -p ~/.config/opencode/commands
@@ -148,9 +158,12 @@ Values: `allow` (loads immediately), `deny` (hidden from agent), `ask` (prompts 
 
 ## Creating a New Skill
 
-1. Create a directory: `.opencode/skills/<skill-name>/`
+1. Create a directory: `.config/opencode/skills/<skill-name>/`
 2. Create `SKILL.md` inside it with YAML frontmatter
 3. Write the instructions in markdown
-4. Restart OpenCode or start a new session
+4. Run `./setup.sh` or `stow -t ~ .`  to symlink it
+5. Restart OpenCode or start a new session
+
+The `.opencode/` directory in this repo is a symlink to `.config/opencode/` — both paths stay in sync.
 
 Contributions welcome — open a PR!
