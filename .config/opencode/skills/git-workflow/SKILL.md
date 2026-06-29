@@ -29,9 +29,11 @@ description: |-
 Always run this check before staging a commit or pushing, so stale local state doesn't cause surprises later:
 
 1. `git fetch origin` — get latest remote refs without merging anything
-2. Compare local branch against its remote counterpart:
-   - `git status` will show "Your branch is behind/ahead/up to date with 'origin/<branch>'" if upstream is already tracked
-   - If no upstream yet (first push not done), instead compare against the base branch: `git log origin/main..HEAD` and `git log HEAD..origin/main` to see divergence in both directions
+2. Compare local branch against its remote counterpart using explicit ref comparison (do NOT rely solely on `git status`, which can report stale "up to date"):
+   - Run `LOCAL=$(git rev-parse HEAD)` and `REMOTE=$(git rev-parse @{upstream} 2>/dev/null || echo "")`
+   - If `$REMOTE` is empty (no upstream), compare against the base branch instead: `git log origin/main..HEAD` and `git log HEAD..origin/main`
+   - If `$LOCAL == $REMOTE`, the branch is truly up to date
+   - If they differ, show how many commits behind/ahead with `git log --oneline HEAD..@{upstream}` and `git log --oneline @{upstream}..HEAD`
 3. **Stash safety net**: if `git status` shows uncommitted changes (staged or unstaged) and the branch is behind, do NOT pull/rebase on top of dirty state.
    - `git stash push -u -m "pre-sync stash"` first (`-u` includes untracked files)
    - Pull/rebase as needed (step 4)
