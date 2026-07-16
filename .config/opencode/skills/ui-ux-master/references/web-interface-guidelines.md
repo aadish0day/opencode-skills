@@ -1,4 +1,25 @@
-Concise rules for building accessible, fast, delightful UIs. Use MUST/SHOULD/NEVER to guide decisions.
+# Web Interface Guidelines
+
+Concise, opinionated rules for building accessible, fast, and delightful web interfaces. Rules use **MUST / SHOULD / NEVER** so they can be applied mechanically during design and review. This is the "house style" baseline — pair it with `tailwind-design.md` (implementation), `accessibility-testing.md` (verification), and `polish-*` / `modern-aesthetics.md` (visual quality).
+
+## Quick reference
+
+| Area | Key rules |
+| --- | --- |
+| Interactions / Keyboard | Full keyboard support; visible focus; managed focus on modals |
+| Targets & Input | Hit area ≥24px (mobile 44px); input ≥16px on mobile; never block zoom |
+| Forms | Inline validation; no dead zones; warn on unsaved changes |
+| State & Nav | URL reflects state; links are real `<a>`; no `<div onClick>` nav |
+| Feedback | Optimistic UI; Undo or confirm; `aria-live` for toasts |
+| Animation | Honor `prefers-reduced-motion`; only `transform`/`opacity`; no `transition: all` |
+| Layout | Optical alignment; safe areas; no accidental scrollbars |
+| Color & Contrast | Meet APCA/WCAG; redundant cues; not color-only |
+| Typography | `tabular-nums` for numbers; `text-wrap: balance`; locale-aware |
+| Components | Every state designed; native semantics before ARIA |
+| Mobile | `100dvh`; `env(safe-area-inset-*)`; thumb-zone actions |
+| Performance | Virtualize >50 items; <500ms mutations; preload critical fonts |
+| Dark mode | `color-scheme: dark`; theme-color matching; explicit `<select>` colors |
+| Hydration | Controlled inputs need `onChange`; guard date/time |
 
 ## Interactions
 
@@ -84,32 +105,55 @@ Concise rules for building accessible, fast, delightful UIs. Use MUST/SHOULD/NEV
 - MUST: Avoid unwanted scrollbars; fix overflows
 - SHOULD: Flex/grid over JS measurement for layout
 
-## Content & Accessibility
+## Color & Contrast
 
-- SHOULD: Inline help first; tooltips last resort
-- MUST: Skeletons mirror final content to avoid layout shift
-- MUST: `<title>` matches current context
-- MUST: No dead ends; always offer next step/recovery
-- MUST: Design empty/sparse/dense/error states
-- SHOULD: Curly quotes (" "); avoid widows/orphans (`text-wrap: balance`)
-- MUST: `font-variant-numeric: tabular-nums` for number comparisons
-- MUST: Redundant status cues (not color-only); icons have text labels
-- MUST: Accessible names exist even when visuals omit labels
-- MUST: Use `…` character (not `...`)
-- MUST: `scroll-margin-top` on headings; "Skip to content" link; hierarchical `<h1>`–`<h6>`
-- MUST: Resilient to user-generated content (short/avg/very long)
+- MUST: Meet contrast minimums — prefer [APCA](https://apcacontrast.com/) over WCAG 2 for modern UIs; otherwise WCAG AA (4.5:1 text, 3:1 large text/UI)
+- MUST: Increase contrast on `:hover`/`:active`/`:focus` (not decrease)
+- MUST: Redundant status cues—never rely on color alone (pair color with icon/label/pattern)
+- SHOULD: Tint neutrals toward the background hue for cohesion (see `modern-aesthetics.md`)
+- MUST: Accessible charts/visualizations—color-blind-safe palettes
+- SHOULD: Avoid dark gradient banding on large surfaces (use subtle noise/background image)
+- SHOULD: Match browser chrome/`theme-color` to page background
+
+## Typography
+
+- MUST: `font-variant-numeric: tabular-nums` for number comparisons and tables
+- SHOULD: `text-wrap: balance` for headings; `text-wrap: pretty` for body
+- SHOULD: Curly quotes (" "); avoid widows/orphans
 - MUST: Locale-aware dates/times/numbers (`Intl.DateTimeFormat`, `Intl.NumberFormat`)
-- SHOULD: `translate="no"` on brand names, code tokens, & identifiers to prevent garbled auto-translation
-- MUST: Accurate `aria-label`; decorative elements `aria-hidden`
-- MUST: Icon-only buttons have descriptive `aria-label`
-- MUST: Prefer native semantics (`button`, `a`, `label`, `table`) before ARIA
+- SHOULD: `translate="no"` on brand names, code tokens, identifiers to prevent garbled auto-translation
 - MUST: Non-breaking spaces: `10&nbsp;MB`, `⌘&nbsp;K`, brand names
+- SHOULD: Respect `font-display: swap`; preload critical fonts (see Performance)
+- MUST: Design for text expansion (~30% longer than English) for i18n
+
+## Components & State
+
+- MUST: Enumerate every state before styling: default, hover, focus, active, disabled, loading, error, empty, success (see `component-states.md`)
+- MUST: Prefer native semantics (`button`, `a`, `label`, `table`) before ARIA
+- MUST: Accessible names exist even when visuals omit labels
+- MUST: Icon-only buttons have descriptive `aria-label`; decorative elements `aria-hidden`
+- MUST: Accurate `aria-label`; meaningful `name`/`autocomplete` on inputs
+- SHOULD: Skip-to-content link; hierarchical `<h1>`–`<h6>`; `scroll-margin-top` on headings
+- MUST: Skeletons mirror final content to avoid layout shift
+- MUST: No dead ends—always offer a next step / recovery path
+- MUST: Design empty, sparse, dense, and error states explicitly
+
+## Mobile & Viewports
+
+- MUST: Use `100dvh` (not `100vh`) for full-height layout—mobile browser chrome changes
+- MUST: Respect safe areas (`env(safe-area-inset-*)`) for notches/home indicators
+- MUST: Primary actions reachable in the thumb zone (bottom ~⅓ on phones)
+- SHOULD: Bottom sheets/drawers for mobile flows; side panels for desktop
+- MUST: Test at real device widths (320–480px), not just resized desktop
+- SHOULD: Avoid hover-only affordances on touch (provide tap/tap-hold equivalents)
 
 ## Content Handling
 
 - MUST: Text containers handle long content (`truncate`, `line-clamp-*`, `break-words`)
 - MUST: Flex children need `min-w-0` to allow truncation
 - MUST: Handle empty states—no broken UI for empty strings/arrays
+- MUST: Resilient to user-generated content (short / average / very long)
+- SHOULD: Inline help first; tooltips last resort (see `ux-writing.md`)
 
 ## Performance
 
@@ -131,20 +175,33 @@ Concise rules for building accessible, fast, delightful UIs. Use MUST/SHOULD/NEV
 - MUST: `color-scheme: dark` on `<html>` for dark themes
 - SHOULD: `<meta name="theme-color">` matches page background
 - MUST: Native `<select>`: explicit `background-color` and `color` (Windows fix)
+- SHOULD: Re-tune (not just invert) accent contrast for dark surfaces
 
 ## Hydration
 
 - MUST: Inputs with `value` need `onChange` (or use `defaultValue`)
 - SHOULD: Guard date/time rendering against hydration mismatch
 
-## Design
+## Design Quality
 
 - SHOULD: Layered shadows (ambient + direct)
 - SHOULD: Crisp edges via semi-transparent borders + shadows
 - SHOULD: Nested radii: child ≤ parent; concentric
 - SHOULD: Hue consistency: tint borders/shadows/text toward bg hue
-- MUST: Accessible charts (color-blind-friendly palettes)
-- MUST: Meet contrast—prefer [APCA](https://apcacontrast.com/) over WCAG 2
+- MUST: Meet contrast—prefer APCA over WCAG 2
 - MUST: Increase contrast on `:hover`/`:active`/`:focus`
 - SHOULD: Match browser UI to bg
 - SHOULD: Avoid dark color gradient banding (use background images when needed)
+
+## Self-audit (run before shipping)
+
+- [ ] Every interactive element reachable by keyboard with a visible focus ring
+- [ ] Forms validate inline; no dead zones; paste allowed; unsaved-changes warned
+- [ ] URL reflects navigable state; real `<a>` for links
+- [ ] Animations honor `prefers-reduced-motion`; only transform/opacity; no `transition: all`
+- [ ] Contrast meets APCA/WCAG; status not color-only
+- [ ] Numbers `tabular-nums`; text expands 30%; locale-aware formatting
+- [ ] All component states designed; native semantics before ARIA
+- [ ] Mobile uses `dvh` + safe areas; primary action in thumb zone
+- [ ] No CLS; lists >50 virtualized; mutations <500ms
+- [ ] Dark mode sets `color-scheme` and re-tuned accents

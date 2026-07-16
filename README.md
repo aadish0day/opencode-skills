@@ -65,6 +65,38 @@ A comprehensive Git workflow assistant. Triggered automatically when you ask abo
 - **PR descriptions** — Structured markdown: Summary, Changes, Testing, Notes
 - **Conflict resolution** — Explains hunks, proposes resolutions, runs build/tests after
 
+### `ui-ux-master`
+
+A comprehensive UI/UX design and layout toolkit. Triggered automatically when you ask to design or build a web UI, create a design system, make something look premium/modern, add animations, apply UX/product thinking, or review an interface for accessibility and polish. Structured as a lean **router**: the `SKILL.md` points to 28 on-demand reference files so only what a task needs gets loaded.
+
+**Covers:**
+- **Design thinking** — problem framing, job-to-be-done, research, ideation, double-diamond process
+- **Design systems & tokens** — token generator script + wiring into CSS vars, Tailwind v4, TypeScript, dark mode
+- **Tailwind design (v4)** — `@theme` tokens, CVA variants, component extraction, common mistakes
+- **Web interface guidelines** — full MUST/SHOULD/NEVER baseline (a11y, forms, perf, motion, dark mode, mobile)
+- **Distinctive & modern aesthetics** — anti-generic direction, color systems, depth/glass, bento layouts, "make it look expensive"
+- **UX business logic** — job-first framing, conversion funnels, onboarding/activation, cognitive-load laws, retention, no dark patterns
+- **Responsive design** — mobile-first, container queries, fluid typography, CSS Grid, breakpoint strategies
+- **Layout & composition** — grids, 8pt spacing, reading patterns, section/hero/bento structure, visual balance
+- **Forms & data display** — form flows/validation UX, multi-step wizards, tables/charts/KPI cards, dashboards
+- **Mobile & touch** — touch targets, thumb zones, gestures, safe areas, responsive nav, platform conventions
+- **UX writing** — voice/tone, button/error/empty copy, i18n-safe micro-copy
+- **Interaction & signature motion** — microinteractions plus high-end motion (springs, shared-element/layout transitions, scroll-driven, choreography)
+- **Component & edge states** — full state matrix (hover/focus/disabled/loading/error) and loading/empty/error/offline states
+- **Design critique** — 7-lens review, anti-slop audit, severity triage, iteration
+- **Landing pages** — high-conversion single-offer structure, layout types, copy templates, SEO/AEO, pitfalls
+- **Polish** — concentric radii, optical alignment, layered shadows, tabular numbers, typography details
+- **Accessibility & quality** — APCA contrast, screen-reader/keyboard audits, full MUST/SHOULD/NEVER interface checklist
+- **Self-audit rubric** — 13-dimension scored review to run before shipping
+
+### `frontend-design`
+
+Guidance for distinctive, intentional visual design when building or reshaping a UI. Triggered when you need aesthetic direction, typography, and choices that don't read as templated defaults.
+
+### `copywriting`
+
+Expert conversion copywriting for any marketing page — homepage, landing, pricing, feature, or about. Triggers on "write copy for," "improve this copy," "headline help," "CTA copy," "value proposition," "this copy is weak," and similar. Includes clarity-over-cleverness principles, benefits-over-features, headline/CTA formulas, page-specific guidance, and output with annotations + alternatives. Reference files: `copy-frameworks.md`, `natural-transitions.md`.
+
 ## How Skills Work in OpenCode
 
 Skills are stored in `.opencode/skills/<skill-name>/SKILL.md`. OpenCode discovers them automatically from two locations:
