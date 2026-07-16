@@ -9,40 +9,53 @@ A router skill. **Keep this file lean — read only the reference files a given 
 
 The skill combines six areas plus targeted gap-fillers. Each area has detailed references under `references/`.
 
-## How to use this skill
+## Auto-load (MANDATORY — do this immediately on activation)
 
-1. Identify the task type from the decision table below.
-2. Read only the listed reference file(s).
-3. Follow the recommended workflow when doing an end-to-end build.
-4. Run the self-audit rubric before declaring the work done.
+**Do NOT ask which references to load. On activation, match the user's request against the keyword→set map below and immediately `read` every file in the matched set (plus the always-on baseline) before producing any output.** If multiple rows match, load the union of their files. When nothing matches specifically, load the baseline set only.
 
-## Decision table — task → reference
+**Always-on baseline (load for every task):**
+`references/web-interface-guidelines.md`
 
-| If the task is… | Read |
+**Keyword → reference set:**
+
+| If the request mentions… | Also auto-load |
 | --- | --- |
-| Create/maintain a design system, generate tokens | run `references/design_token_generator.py`; then `references/tokens-to-code.md` |
-| Wire tokens into CSS vars / Tailwind v4 / TS | `references/tokens-to-code.md` |
-| Choose aesthetic direction, typography, avoid generic looks | **§ Distinctive Design** below (self-contained) |
-| Make it look premium/expensive/modern (color, depth, glass, bento) | `references/modern-aesthetics.md` |
-| Product/UX thinking, conversion, funnels, flows, business logic | `references/ux-business-logic.md` |
-| High-end signature motion (shared-element, scroll, choreography) | `references/signature-animations.md` |
-| Grid/spacing, page composition, hero/section/bento patterns | `references/layout-composition.md` |
-| Forms, inputs, validation UX, multi-step wizards | `references/forms-inputs.md` |
-| Tables, charts, KPI cards, dashboards, dense data UI | `references/data-display.md` |
-| Mobile/touch design, gestures, thumb zones, responsive nav | `references/mobile-touch.md` |
-| Micro-copy, button/error labels, empty-state text, UX writing | `references/ux-writing.md` |
-| Review/critique a design, iterate, self-assess quality | `references/design-critique.md` |
-| Landing page: structure, layout, copy, SEO/AEO, pitfalls | `references/landing-page.md` |
-| Problem framing, JTBD, research, ideation, double diamond | `references/design-thinking.md` |
-| Building UI with Tailwind v4 (tokens, CVA, components) | `references/tailwind-design.md` |
-| Baseline rules: a11y, forms, perf, motion, dark mode | `references/web-interface-guidelines.md` |
-| Responsive layout, breakpoints, fluid type, container queries | `references/details.md`, `references/breakpoint-strategies.md`, `references/container-queries.md`, `references/fluid-layouts.md` |
-| Animations, microinteractions, transitions, loading states | `references/microinteraction-patterns.md`, `references/scroll-animations.md`, `references/animation-libraries.md` |
-| UI polish: radii, shadows, optical alignment, enter/exit anims | `references/polish-surfaces.md`, `references/polish-animations.md`, `references/polish-typography.md`, `references/polish-performance.md` |
-| Define component states (hover/focus/disabled/loading/error) | `references/component-states.md` |
-| Empty / error / loading / edge states | `references/empty-error-states.md` |
-| Deep accessibility work or audit | `references/accessibility-testing.md`, `references/web-interface-guidelines.md` |
-| Final quality/performance review | `references/web-interface-guidelines.md` + Self-Audit Rubric below |
+| design system, tokens, generate tokens | run `references/design_token_generator.py`; then `references/tokens-to-code.md` |
+| css variables, tailwind, `@theme`, CVA, components | `references/tokens-to-code.md`, `references/tailwind-design.md` |
+| aesthetic, typography, generic, premium, expensive, modern, look | **§ Distinctive Design** below (self-contained), `references/modern-aesthetics.md` |
+| conversion, funnel, onboarding, retention, business, product logic | `references/ux-business-logic.md` |
+| signature motion, shared-element, scroll animation, choreography | `references/signature-animations.md` |
+| layout, grid, spacing, composition, hero, section, bento | `references/layout-composition.md` |
+| form, input, validation, wizard, multi-step | `references/forms-inputs.md` |
+| table, chart, dashboard, kpi, data display | `references/data-display.md` |
+| mobile, touch, gesture, thumb, safe area, responsive nav | `references/mobile-touch.md` |
+| copy, micro-copy, button label, error text, empty state, ux writing | `references/ux-writing.md` |
+| critique, review, iterate, self-assess, quality | `references/design-critique.md` |
+| landing page, landing, single offer | `references/landing-page.md`, `references/layout-composition.md`, `references/ux-writing.md` |
+| problem, research, jtbd, ideate, brainstorm, define | `references/design-thinking.md` |
+| responsive, breakpoint, fluid type, container query | `references/details.md`, `references/breakpoint-strategies.md`, `references/container-queries.md`, `references/fluid-layouts.md` |
+| animation, microinteraction, transition, loading state | `references/microinteraction-patterns.md`, `references/scroll-animations.md`, `references/animation-libraries.md` |
+| polish, radius, shadow, optical, enter/exit | `references/polish-surfaces.md`, `references/polish-animations.md`, `references/polish-typography.md`, `references/polish-performance.md` |
+| component state, hover, focus, disabled, loading state | `references/component-states.md` |
+| empty, error state, edge case, skeleton | `references/empty-error-states.md` |
+| accessibility, a11y, screen reader, audit, contrast | `references/accessibility-testing.md` |
+| ai slop, generic, boring, bland, cliché, template, avoid default | `references/anti-slop.md`, `references/modern-aesthetics.md` |
+| component, architecture, composition, state, colocate, refactor, structure | `references/component-architecture.md` |
+
+After loading, follow the workflow below and run the self-audit rubric before declaring the work done.
+
+## Thinking Protocol (MANDATORY — reason before you build)
+
+Do not jump to code or copy. Before producing any output, think through the task out loud using `<thinking>` blocks (or a short written reasoning pass) and work these steps in order. This is the "thinking power" of the skill — it forces design-lead reasoning instead of templated output.
+
+1. **Name the real problem.** What is the user actually trying to accomplish? Restate it in one sentence as a job-to-be-done. Separate the stated request from the underlying need.
+2. **Constraint & context map.** Who is the user? What device/context? What's fixed (brand, existing system, tech) vs free? What are the top 3 risks of getting it wrong?
+3. **Generate options.** For the key decision (layout, aesthetic direction, copy angle, interaction), propose at least **2–3 structurally different** approaches — not variations of one. Note the trade-off of each.
+4. **Decide with justification.** Pick one approach and state *why* it wins for this specific brief (impact, effort, fit). Explicitly say what you're rejecting and why.
+5. **Plan the build.** Sequence the work (frame → system → aesthetic → layout → pieces → motion → copy → polish → audit). Identify the riskiest assumption and prototype/address it first.
+6. **Self-check against principles.** Before final output, run the loaded references' MUST rules and the self-audit rubric mentally; note any dimension likely to score <1 and how you'll lift it.
+
+Only after this reasoning should you write code, copy, or design. Surface the key reasoning to the user briefly (the chosen direction + the rejected alternatives + the one risk you're watching) so they can redirect early.
 
 ## When NOT to over-apply (gating)
 
@@ -122,6 +135,8 @@ If any row scores 0, go back to the matching reference file before finishing.
 - `references/ux-writing.md` — voice/tone, button/label/error copy, empty states, i18n-safe micro-copy
 - `references/design-critique.md` — 7-lens critique, anti-slop audit, severity triage, iteration
 - `references/landing-page.md` — high-conversion single-offer page: structure, layout types, copy templates, SEO/AEO, pitfalls
+- `references/anti-slop.md` — concrete banned patterns + AI-slop test + color strategy + typography/layout bans
+- `references/component-architecture.md` — composition over config, data/presentation split, state ladder, semantic tokens, focus management
 - `references/design_token_generator.py` — generate tokens from a brand color (`python … "#3B82F6" modern css`)
 - `references/tokens-to-code.md` — wire tokens into CSS vars, Tailwind v4, TypeScript, dark mode
 - `references/details.md`, `references/breakpoint-strategies.md`, `references/container-queries.md`, `references/fluid-layouts.md` — responsive patterns

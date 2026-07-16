@@ -84,6 +84,8 @@ A comprehensive UI/UX design and layout toolkit. Triggered automatically when yo
 - **Interaction & signature motion** — microinteractions plus high-end motion (springs, shared-element/layout transitions, scroll-driven, choreography)
 - **Component & edge states** — full state matrix (hover/focus/disabled/loading/error) and loading/empty/error/offline states
 - **Design critique** — 7-lens review, anti-slop audit, severity triage, iteration
+- **Anti-slop** — concrete banned patterns (cream bg, eyebrow/01·02·03 on every section, gradient text, side-stripe borders), AI-slop test, color strategy
+- **Component architecture** — composition over config, data/presentation split, state ladder, semantic tokens, focus management
 - **Landing pages** — high-conversion single-offer structure, layout types, copy templates, SEO/AEO, pitfalls
 - **Polish** — concentric radii, optical alignment, layered shadows, tabular numbers, typography details
 - **Accessibility & quality** — APCA contrast, screen-reader/keyboard audits, full MUST/SHOULD/NEVER interface checklist
